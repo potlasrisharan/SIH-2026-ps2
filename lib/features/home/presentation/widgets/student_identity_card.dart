@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/widgets/pulse_dot.dart';
 import '../../data/models/student_profile.dart';
 
 class StudentIdentityCard extends StatelessWidget {
@@ -12,77 +14,70 @@ class StudentIdentityCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? AppColors.darkCard : Colors.white,
+        color: isDark ? AppColors.darkCard : AppColors.lightCard,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isDark ? AppColors.darkBorder : AppColors.slateBorder,
-          width: 1.2,
+          color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
+          width: 1.0,
         ),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Top Credential Header
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            decoration: BoxDecoration(
-              color: isDark
-                  ? AppColors.civicNavyDark
-                  : AppColors.civicNavy.withValues(alpha: 0.05),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              ),
-            ),
+          // Bento Top Bar: Status and Verification Seal
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 12),
             child: Row(
               children: [
-                const Icon(
-                  Icons.verified_user,
-                  color: AppColors.forestGreen,
-                  size: 18,
-                ),
-                const SizedBox(width: 6),
-                const Text(
-                  'DigiLocker Certified Identity',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.forestGreen,
-                  ),
-                ),
-                const Spacer(),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: AppColors.forestGreenLight,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.forestGreenBorder),
+                    color: isDark
+                        ? AppColors.emeraldVerified.withValues(alpha: 0.15)
+                        : AppColors.emeraldLight,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: isDark
+                          ? AppColors.emeraldVerified.withValues(alpha: 0.4)
+                          : AppColors.emeraldBorder,
+                    ),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.check_circle, color: AppColors.forestGreen, size: 12),
-                      SizedBox(width: 4),
+                      const PulseDot(color: AppColors.emeraldVerified, size: 6),
+                      const SizedBox(width: 6),
                       Text(
-                        '100% VERIFIED',
-                        style: TextStyle(
-                          color: AppColors.forestGreen,
+                        'DIGILOCKER VERIFIED',
+                        style: GoogleFonts.jetBrainsMono(
                           fontSize: 10,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 0.4,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.emeraldVerified,
+                          letterSpacing: 0.5,
                         ),
                       ),
                     ],
                   ),
                 ),
+                const Spacer(),
+                Text(
+                  student.id,
+                  style: GoogleFonts.jetBrainsMono(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
+                  ),
+                ),
               ],
             ),
           ),
-          // Student Main Details
+          const Divider(height: 1, thickness: 1),
+
+          // Primary Student Profile Stack
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -91,15 +86,26 @@ class StudentIdentityCard extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
-                      radius: 28,
-                      backgroundColor: AppColors.civicNavy,
-                      child: Text(
-                        student.name.split(' ').map((e) => e[0]).take(2).join(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                    // Avatar with subtle inner ring
+                    Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: isDark ? const Color(0xFF1E2E48) : AppColors.civicNavy,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: isDark ? const Color(0xFF3B82F6) : const Color(0xFF1E3A5F),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          student.name.split(' ').map((e) => e[0]).take(2).join(),
+                          style: GoogleFonts.outfit(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                          ),
                         ),
                       ),
                     ),
@@ -110,24 +116,40 @@ class StudentIdentityCard extends StatelessWidget {
                         children: [
                           Text(
                             student.name,
-                            style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
+                            style: GoogleFonts.outfit(
+                              fontSize: 19,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: -0.3,
                             ),
                           ),
                           const SizedBox(height: 2),
-                          Text(
-                            student.category,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: AppColors.saffron,
-                              fontWeight: FontWeight.w600,
-                            ),
+                          Row(
+                            children: [
+                              Container(
+                                width: 6,
+                                height: 6,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: AppColors.saffron,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                student.category,
+                                style: GoogleFonts.outfit(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.saffron,
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 2),
                           Text(
                             '${student.district}, ${student.state}',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: isDark ? const Color(0xFF94A3B8) : AppColors.slateTextSecondary,
+                            style: GoogleFonts.outfit(
+                              fontSize: 12,
+                              color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
                             ),
                           ),
                         ],
@@ -135,42 +157,124 @@ class StudentIdentityCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 14),
-                const Divider(height: 1),
+                const SizedBox(height: 16),
+
+                // Institutional Enrollment & Program Row
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: isDark ? AppColors.darkSurface : AppColors.lightCanvas,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: isDark ? AppColors.darkBorderSubtle : AppColors.lightBorder,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(Icons.school, size: 14, color: AppColors.civicNavyLight),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              student.institution,
+                              style: GoogleFonts.outfit(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        student.course,
+                        style: GoogleFonts.outfit(
+                          fontSize: 11,
+                          color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 const SizedBox(height: 12),
-                // Grid of verified parameters
-                _buildInfoRow(
-                  context,
-                  icon: Icons.school_outlined,
-                  label: 'Institution',
-                  value: student.institution,
-                ),
-                const SizedBox(height: 8),
-                _buildInfoRow(
-                  context,
-                  icon: Icons.account_tree_outlined,
-                  label: 'Program',
-                  value: student.course,
-                ),
-                const SizedBox(height: 8),
+
+                // Asymmetric Dual Metric Tiles (Income & Bank Seeded)
                 Row(
                   children: [
                     Expanded(
-                      child: _buildInfoRow(
-                        context,
-                        icon: Icons.currency_rupee,
-                        label: 'Annual Income',
-                        value: '₹ 1.80 Lakh',
-                        valueColor: AppColors.forestGreen,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: isDark ? AppColors.darkSurface : AppColors.lightCanvas,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: isDark ? AppColors.darkBorderSubtle : AppColors.lightBorder,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'ANNUAL FAMILY INCOME',
+                              style: GoogleFonts.jetBrainsMono(
+                                fontSize: 9,
+                                fontWeight: FontWeight.w600,
+                                color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              '₹ 1,80,000',
+                              style: GoogleFonts.jetBrainsMono(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.emeraldVerified,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
+                    const SizedBox(width: 8),
                     Expanded(
-                      child: _buildInfoRow(
-                        context,
-                        icon: Icons.credit_card,
-                        label: 'Aadhaar / DBT',
-                        value: 'Bank Seeded',
-                        valueColor: AppColors.forestGreen,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: isDark ? AppColors.darkSurface : AppColors.lightCanvas,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: isDark ? AppColors.darkBorderSubtle : AppColors.lightBorder,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'AADHAAR / DBT SEEDING',
+                              style: GoogleFonts.jetBrainsMono(
+                                fontSize: 9,
+                                fontWeight: FontWeight.w600,
+                                color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
+                              ),
+                            ),
+                            const SizedBox(height: 2),
+                            Row(
+                              children: [
+                                const Icon(Icons.check_circle, size: 12, color: AppColors.emeraldVerified),
+                                const SizedBox(width: 4),
+                                Text(
+                                  student.bankAccountMasked,
+                                  style: GoogleFonts.jetBrainsMono(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -178,13 +282,14 @@ class StudentIdentityCard extends StatelessWidget {
               ],
             ),
           ),
-          // Bottom Policy Banner
+
+          // Vault Encrypted Footer Ribbon
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
               color: isDark
-                  ? Colors.black.withValues(alpha: 0.2)
-                  : AppColors.slateCanvas,
+                  ? Colors.black.withValues(alpha: 0.25)
+                  : const Color(0xFFF1F5F9),
               borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(15),
                 bottomRight: Radius.circular(15),
@@ -192,15 +297,14 @@ class StudentIdentityCard extends StatelessWidget {
             ),
             child: Row(
               children: [
-                const Icon(Icons.offline_pin, size: 14, color: AppColors.infoBlue),
+                const Icon(Icons.lock_clock, size: 13, color: AppColors.infoBlue),
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    'Vault encrypted locally • Offline verified on ${student.offlineSyncDate}',
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: AppColors.slateTextSecondary,
-                      fontWeight: FontWeight.w500,
+                    'Tamper-proof local vault • Synchronized ${student.offlineSyncDate}',
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 10,
+                      color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
                     ),
                   ),
                 ),
@@ -209,47 +313,6 @@ class StudentIdentityCard extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildInfoRow(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-    required String value,
-    Color? valueColor,
-  }) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, size: 16, color: isDark ? const Color(0xFF94A3B8) : AppColors.slateTextSecondary),
-        const SizedBox(width: 8),
-        Expanded(
-          child: RichText(
-            text: TextSpan(
-              style: theme.textTheme.bodySmall?.copyWith(fontSize: 12),
-              children: [
-                TextSpan(
-                  text: '$label: ',
-                  style: TextStyle(
-                    color: isDark ? const Color(0xFF94A3B8) : AppColors.slateTextSecondary,
-                  ),
-                ),
-                TextSpan(
-                  text: value,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: valueColor ?? (isDark ? Colors.white : AppColors.slateCharcoal),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

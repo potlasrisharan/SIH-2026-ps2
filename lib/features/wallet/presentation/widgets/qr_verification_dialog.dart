@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../data/models/digilocker_document.dart';
@@ -20,118 +21,129 @@ class QrVerificationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      backgroundColor: isDark ? AppColors.darkSurface : Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      backgroundColor: isDark ? AppColors.darkCard : Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Header
+            // Modal Header
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(6),
+                  padding: const EdgeInsets.all(7),
                   decoration: BoxDecoration(
-                    color: AppColors.forestGreen.withValues(alpha: 0.12),
-                    shape: BoxShape.circle,
+                    color: AppColors.emeraldVerified.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(Icons.qr_code_scanner, color: AppColors.forestGreen, size: 20),
+                  child: const Icon(Icons.qr_code_2, color: AppColors.emeraldVerified, size: 18),
                 ),
                 const SizedBox(width: 10),
-                const Expanded(
+                Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Offline QR Verification',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                        'Offline Cryptographic QR Pass',
+                        style: GoogleFonts.outfit(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                        ),
                       ),
                       Text(
-                        'GIGW & DigiLocker Verifiable Token',
-                        style: TextStyle(fontSize: 11, color: AppColors.slateTextSecondary),
+                        'Zero-Network Verifiable Credential',
+                        style: GoogleFonts.outfit(
+                          fontSize: 11,
+                          color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
+                        ),
                       ),
                     ],
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.close, size: 20),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  icon: const Icon(Icons.close, size: 18),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 18),
 
-            // QR Code Container
+            // High Contrast QR Frame
             Container(
-              padding: const EdgeInsets.all(14),
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: AppColors.slateBorder, width: 1.5),
+                borderRadius: BorderRadius.circular(14),
+                border: Border.all(color: const Color(0xFFCBD5E1), width: 1.0),
               ),
               child: QrImageView(
                 data: document.qrPayload,
                 version: QrVersions.auto,
-                size: 200.0,
+                size: 190.0,
                 eyeStyle: const QrEyeStyle(
                   eyeShape: QrEyeShape.square,
-                  color: AppColors.civicNavy,
+                  color: Color(0xFF0F172A),
                 ),
                 dataModuleStyle: const QrDataModuleStyle(
                   dataModuleShape: QrDataModuleShape.square,
-                  color: AppColors.civicNavy,
+                  color: Color(0xFF0F172A),
                 ),
               ),
             ),
             const SizedBox(height: 16),
 
-            // Document Details Box
+            // Metadata Card
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isDark ? AppColors.darkCard : AppColors.slateCanvas,
+                color: isDark ? AppColors.darkSurface : AppColors.lightCanvas,
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: isDark ? AppColors.darkBorder : AppColors.slateBorder),
+                border: Border.all(
+                  color: isDark ? AppColors.darkBorderSubtle : AppColors.lightBorder,
+                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     document.title,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                    style: GoogleFonts.outfit(fontWeight: FontWeight.w700, fontSize: 13),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 3),
                   Text(
-                    'Cert No: ${document.certificateNumber}',
-                    style: const TextStyle(
-                      fontFamily: 'monospace',
-                      fontSize: 11,
+                    'CERT ID: ${document.certificateNumber}',
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 10,
                       fontWeight: FontWeight.w600,
                       color: AppColors.infoBlue,
                     ),
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 3),
                   Text(
-                    'Issuer: ${document.issuer}',
-                    style: const TextStyle(fontSize: 11, color: AppColors.slateTextSecondary),
+                    document.issuer,
+                    style: GoogleFonts.outfit(
+                      fontSize: 11,
+                      color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
+                    ),
                   ),
                   const SizedBox(height: 6),
-                  const Row(
+                  Row(
                     children: [
-                      Icon(Icons.lock_outline, size: 12, color: AppColors.forestGreen),
-                      SizedBox(width: 4),
+                      const Icon(Icons.verified, size: 12, color: AppColors.emeraldVerified),
+                      const SizedBox(width: 4),
                       Text(
-                        'Tamper-Proof Cryptographic Hash (Offline Verifiable)',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                          color: AppColors.forestGreen,
+                        'Digitally Signed via Certifying Authority India',
+                        style: GoogleFonts.jetBrainsMono(
+                          fontSize: 9,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.emeraldVerified,
                         ),
                       ),
                     ],
@@ -141,15 +153,20 @@ class QrVerificationDialog extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Done Button
+            // Close Action
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.civicNavy,
+                backgroundColor: isDark ? const Color(0xFF1E3A5F) : AppColors.civicNavy,
                 foregroundColor: Colors.white,
-                minimumSize: const Size.fromHeight(42),
+                minimumSize: const Size.fromHeight(40),
+                elevation: 0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close QR Pass'),
+              child: Text(
+                'Close Pass',
+                style: GoogleFonts.outfit(fontWeight: FontWeight.w600, fontSize: 13),
+              ),
             ),
           ],
         ),

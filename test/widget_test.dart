@@ -20,12 +20,13 @@ void main() {
     expect(schemes.any((s) => s.id == 'scheme-post-matric'), isTrue);
   });
 
-  testWidgets('App renders main navigation and dashboard', (WidgetTester tester) async {
+  testWidgets('App renders main navigation and dashboard with high-agency UI', (WidgetTester tester) async {
     await tester.pumpWidget(const ProviderScope(child: MotaScholarshipApp()));
-    await tester.pumpAndSettle();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 200));
 
     expect(find.text('MINISTRY OF TRIBAL AFFAIRS'), findsOneWidget);
     expect(find.text('Ramesh Soren'), findsOneWidget);
-    expect(find.text('100% VERIFIED'), findsOneWidget);
+    expect(find.text('DIGILOCKER VERIFIED'), findsWidgets);
   });
 }

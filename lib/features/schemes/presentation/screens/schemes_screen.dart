@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/providers/app_providers.dart';
+import '../../../../core/widgets/pulse_dot.dart';
 import '../../data/models/scholarship_scheme.dart';
 
 class SchemesScreen extends ConsumerStatefulWidget {
@@ -17,8 +19,7 @@ class _SchemesScreenState extends ConsumerState<SchemesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final schemes = ref.watch(scholarshipSchemesProvider);
 
     final filteredSchemes = schemes.where((scheme) {
@@ -29,9 +30,9 @@ class _SchemesScreenState extends ConsumerState<SchemesScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'MoTA Scholarship Schemes',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: GoogleFonts.outfit(fontWeight: FontWeight.w700, fontSize: 18),
         ),
       ),
       body: Column(
@@ -39,18 +40,24 @@ class _SchemesScreenState extends ConsumerState<SchemesScreen> {
           // Filter Tabs
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-            color: isDark ? AppColors.darkSurface : Colors.white,
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.darkSurface : Colors.white,
+              border: Border(
+                bottom: BorderSide(
+                  color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
+                ),
+              ),
+            ),
             child: Row(
               children: [
-                _buildTab('Eligible for You', count: schemes.where((s) => s.isEligible).length),
+                _buildTab('Eligible for You', count: schemes.where((s) => s.isEligible).length, isDark: isDark),
                 const SizedBox(width: 8),
-                _buildTab('All Schemes', count: schemes.length),
+                _buildTab('All Schemes', count: schemes.length, isDark: isDark),
                 const SizedBox(width: 8),
-                _buildTab('Applied', count: schemes.where((s) => s.isApplied).length),
+                _buildTab('Applied', count: schemes.where((s) => s.isApplied).length, isDark: isDark),
               ],
             ),
           ),
-          const Divider(height: 1),
 
           // Schemes List
           Expanded(
@@ -60,7 +67,7 @@ class _SchemesScreenState extends ConsumerState<SchemesScreen> {
               separatorBuilder: (context, index) => const SizedBox(height: 14),
               itemBuilder: (context, index) {
                 final scheme = filteredSchemes[index];
-                return _buildSchemeCard(context, scheme);
+                return _buildSchemeCard(context, scheme, isDark);
               },
             ),
           ),
@@ -69,7 +76,7 @@ class _SchemesScreenState extends ConsumerState<SchemesScreen> {
     );
   }
 
-  Widget _buildTab(String title, {required int count}) {
+  Widget _buildTab(String title, {required int count, required bool isDark}) {
     final isSelected = selectedTab == title;
     return InkWell(
       onTap: () => setState(() => selectedTab = title),
@@ -77,35 +84,45 @@ class _SchemesScreenState extends ConsumerState<SchemesScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.civicNavy : Colors.transparent,
+          color: isSelected
+              ? (isDark ? const Color(0xFF1E3A5F) : AppColors.civicNavy)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? AppColors.civicNavy : AppColors.slateBorder,
+            color: isSelected
+                ? (isDark ? const Color(0xFF1E3A5F) : AppColors.civicNavy)
+                : (isDark ? AppColors.darkBorder : AppColors.lightBorder),
           ),
         ),
         child: Row(
           children: [
             Text(
               title,
-              style: TextStyle(
+              style: GoogleFonts.outfit(
                 fontSize: 12,
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                color: isSelected ? Colors.white : AppColors.slateTextSecondary,
+                fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                color: isSelected
+                    ? Colors.white
+                    : (isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight),
               ),
             ),
             const SizedBox(width: 6),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
               decoration: BoxDecoration(
-                color: isSelected ? Colors.white.withValues(alpha: 0.25) : AppColors.slateBorder,
+                color: isSelected
+                    ? Colors.white.withValues(alpha: 0.22)
+                    : (isDark ? AppColors.darkSurface : AppColors.lightBorder),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
                 '$count',
-                style: TextStyle(
+                style: GoogleFonts.jetBrainsMono(
                   fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  color: isSelected ? Colors.white : AppColors.slateCharcoal,
+                  fontWeight: FontWeight.w700,
+                  color: isSelected
+                      ? Colors.white
+                      : (isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight),
                 ),
               ),
             ),
@@ -115,10 +132,7 @@ class _SchemesScreenState extends ConsumerState<SchemesScreen> {
     );
   }
 
-  Widget _buildSchemeCard(BuildContext context, ScholarshipScheme scheme) {
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
-
+  Widget _buildSchemeCard(BuildContext context, ScholarshipScheme scheme, bool isDark) {
     return Container(
       decoration: BoxDecoration(
         color: isDark ? AppColors.darkCard : Colors.white,
@@ -126,33 +140,24 @@ class _SchemesScreenState extends ConsumerState<SchemesScreen> {
         border: Border.all(
           color: scheme.isEligible
               ? (isDark ? const Color(0xFF1E3A8A) : const Color(0xFFBFDBFE))
-              : (isDark ? AppColors.darkBorder : AppColors.slateBorder),
-          width: scheme.isEligible ? 1.5 : 1.0,
+              : (isDark ? AppColors.darkBorder : AppColors.lightBorder),
+          width: scheme.isEligible ? 1.4 : 1.0,
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header Bar
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-            decoration: BoxDecoration(
-              color: scheme.isEligible
-                  ? (isDark ? const Color(0xFF0F2650) : const Color(0xFFEFF6FF))
-                  : (isDark ? Colors.black26 : AppColors.slateCanvas),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(15),
-                topRight: Radius.circular(15),
-              ),
-            ),
+          // Header Row
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
             child: Row(
               children: [
                 Expanded(
                   child: Text(
-                    scheme.fundingPattern,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
+                    scheme.fundingPattern.toUpperCase(),
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
                       color: AppColors.infoBlue,
                     ),
                     overflow: TextOverflow.ellipsis,
@@ -160,37 +165,51 @@ class _SchemesScreenState extends ConsumerState<SchemesScreen> {
                 ),
                 if (scheme.isApplied)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                     decoration: BoxDecoration(
-                      color: AppColors.forestGreenLight,
-                      borderRadius: BorderRadius.circular(4),
+                      color: isDark
+                          ? AppColors.emeraldVerified.withValues(alpha: 0.15)
+                          : AppColors.emeraldLight,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: AppColors.emeraldBorder),
                     ),
-                    child: const Text(
-                      'APPLIED',
-                      style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.forestGreen,
-                      ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const PulseDot(color: AppColors.emeraldVerified, size: 5),
+                        const SizedBox(width: 5),
+                        Text(
+                          'APPLIED',
+                          style: GoogleFonts.jetBrainsMono(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.emeraldVerified,
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 else if (scheme.isEligible)
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                     decoration: BoxDecoration(
-                      color: AppColors.forestGreenLight,
-                      borderRadius: BorderRadius.circular(4),
+                      color: isDark
+                          ? AppColors.emeraldVerified.withValues(alpha: 0.15)
+                          : AppColors.emeraldLight,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: AppColors.emeraldBorder),
                     ),
-                    child: const Row(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.check, size: 12, color: AppColors.forestGreen),
-                        SizedBox(width: 2),
+                        const Icon(Icons.check, size: 11, color: AppColors.emeraldVerified),
+                        const SizedBox(width: 4),
                         Text(
                           '100% ELIGIBLE',
-                          style: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.forestGreen,
+                          style: GoogleFonts.jetBrainsMono(
+                            fontSize: 9,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.emeraldVerified,
                           ),
                         ),
                       ],
@@ -198,125 +217,153 @@ class _SchemesScreenState extends ConsumerState<SchemesScreen> {
                   )
                 else
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                     decoration: BoxDecoration(
-                      color: AppColors.slateBorder,
-                      borderRadius: BorderRadius.circular(4),
+                      color: isDark ? AppColors.darkSurface : AppColors.lightBorder,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Text(
-                      'CRITERIA NOT MET',
-                      style: TextStyle(fontSize: 10, color: AppColors.slateTextSecondary),
+                    child: Text(
+                      'POST-GRAD ONLY',
+                      style: GoogleFonts.jetBrainsMono(
+                        fontSize: 9,
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
+                      ),
                     ),
                   ),
               ],
             ),
           ),
+          const Divider(height: 1, thickness: 1),
+
           Padding(
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   scheme.title,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  style: GoogleFonts.outfit(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    letterSpacing: -0.2,
+                  ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 3),
                 Text(
                   scheme.level,
-                  style: const TextStyle(
+                  style: GoogleFonts.outfit(
                     fontSize: 12,
-                    fontWeight: FontWeight.w500,
+                    fontWeight: FontWeight.w600,
                     color: AppColors.saffron,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
                   scheme.description,
-                  style: const TextStyle(
+                  style: GoogleFonts.outfit(
                     fontSize: 12,
-                    color: AppColors.slateTextSecondary,
-                    height: 1.35,
+                    color: isDark ? AppColors.textSecondaryDark : AppColors.textSecondaryLight,
+                    height: 1.4,
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 12),
 
-                // Financial Highlights
+                // Financial Highlights Box
                 Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: isDark ? Colors.black.withValues(alpha: 0.2) : AppColors.slateCanvas,
-                    borderRadius: BorderRadius.circular(8),
+                    color: isDark ? AppColors.darkSurface : AppColors.lightCanvas,
+                    borderRadius: BorderRadius.circular(10),
                     border: Border.all(
-                      color: isDark ? AppColors.darkBorder : AppColors.slateBorder,
+                      color: isDark ? AppColors.darkBorderSubtle : AppColors.lightBorder,
                     ),
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.currency_rupee, size: 18, color: AppColors.forestGreen),
-                      const SizedBox(width: 6),
+                      const Icon(Icons.currency_rupee, size: 16, color: AppColors.emeraldVerified),
+                      const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           scheme.financialBenefits,
-                          style: const TextStyle(
-                            fontSize: 11,
+                          style: GoogleFonts.outfit(
+                            fontSize: 12,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.forestGreen,
+                            color: AppColors.emeraldVerified,
                           ),
                         ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 14),
 
-                // Bottom Action
+                // Bottom Action Row
                 Row(
                   children: [
                     Text(
                       'Deadline: ${scheme.deadline}',
-                      style: const TextStyle(fontSize: 11, color: AppColors.slateMuted),
+                      style: GoogleFonts.jetBrainsMono(
+                        fontSize: 10,
+                        color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
+                      ),
                     ),
                     const Spacer(),
                     if (scheme.isApplied)
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.forestGreen,
+                          backgroundColor: AppColors.emeraldVerified,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                           minimumSize: Size.zero,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         ),
-                        icon: const Icon(Icons.track_changes, size: 14),
-                        label: const Text('Track Application', style: TextStyle(fontSize: 12)),
+                        icon: const Icon(Icons.timeline, size: 13),
+                        label: Text('Track Pipeline', style: GoogleFonts.outfit(fontSize: 12, fontWeight: FontWeight.w600)),
                         onPressed: () => context.go('/tracking'),
                       )
                     else if (scheme.isEligible)
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.civicNavy,
+                          backgroundColor: isDark ? const Color(0xFF1E3A5F) : AppColors.civicNavy,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                           minimumSize: Size.zero,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         ),
-                        icon: const Icon(Icons.flash_on, size: 16),
-                        label: const Text('1-Click Apply', style: TextStyle(fontSize: 12)),
-                        onPressed: () {
-                          _show1ClickApplyConfirmation(context, scheme);
-                        },
+                        icon: const Icon(Icons.bolt, size: 15),
+                        label: Text('1-Click Apply', style: GoogleFonts.outfit(fontSize: 12, fontWeight: FontWeight.w600)),
+                        onPressed: () => _show1ClickApplySheet(context, scheme, isDark),
                       )
                     else
                       OutlinedButton(
                         style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                           minimumSize: Size.zero,
+                          side: BorderSide(
+                            color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
+                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                         ),
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('This scheme is for Postgraduate / Research scholars.'),
+                            SnackBar(
+                              content: Text(
+                                'Requires enrollment in M.Phil / Ph.D. or overseas program.',
+                                style: GoogleFonts.outfit(fontSize: 12),
+                              ),
                             ),
                           );
                         },
-                        child: const Text('Eligibility Criteria', style: TextStyle(fontSize: 12)),
+                        child: Text(
+                          'Criteria',
+                          style: GoogleFonts.outfit(
+                            fontSize: 11,
+                            color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
+                          ),
+                        ),
                       ),
                   ],
                 ),
@@ -328,87 +375,121 @@ class _SchemesScreenState extends ConsumerState<SchemesScreen> {
     );
   }
 
-  void _show1ClickApplyConfirmation(BuildContext context, ScholarshipScheme scheme) {
+  void _show1ClickApplySheet(BuildContext context, ScholarshipScheme scheme, bool isDark) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: isDark ? AppColors.darkCard : Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
       builder: (bottomSheetContext) => Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(22),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const Icon(Icons.verified_user, color: AppColors.forestGreen, size: 24),
-                const SizedBox(width: 8),
-                const Expanded(
-                  child: Text(
-                    '1-Click DigiLocker Direct Application',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppColors.emeraldVerified.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.verified_user, color: AppColors.emeraldVerified, size: 20),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '1-Click DigiLocker Application',
+                        style: GoogleFonts.outfit(fontSize: 16, fontWeight: FontWeight.w700),
+                      ),
+                      Text(
+                        'Zero-Upload Instant Submission',
+                        style: GoogleFonts.outfit(
+                          fontSize: 11,
+                          color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.close),
+                  icon: const Icon(Icons.close, size: 18),
                   onPressed: () => Navigator.pop(bottomSheetContext),
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 14),
             Text(
-              'Applying for: ${scheme.title}',
-              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 13),
+              scheme.title,
+              style: GoogleFonts.outfit(fontWeight: FontWeight.w700, fontSize: 14),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.forestGreenLight,
+                color: isDark ? AppColors.darkSurface : AppColors.emeraldLight.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: AppColors.forestGreenBorder),
+                border: Border.all(
+                  color: isDark ? AppColors.darkBorderSubtle : AppColors.emeraldBorder,
+                ),
               ),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'No Documents Required to Upload',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
+                    'No Physical Scans or Uploads Required',
+                    style: GoogleFonts.outfit(
+                      fontWeight: FontWeight.w700,
                       fontSize: 12,
-                      color: AppColors.forestGreen,
+                      color: AppColors.emeraldVerified,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
-                    'Your verified ST Caste Certificate, Income Certificate (₹1.80L), NIT Jamshedpur Enrollment, and DBT Bank Account will be attached cryptographically via your verified DigiLocker vault.',
-                    style: TextStyle(fontSize: 11, color: Color(0xFF14532D)),
+                    'Your verified ST Certificate (Santhal), Income Certificate (₹1.80L), NIT Jamshedpur Enrollment, and Aadhaar-seeded Bank Account will be attached cryptographically via your verified DigiLocker vault.',
+                    style: GoogleFonts.outfit(
+                      fontSize: 11,
+                      color: isDark ? AppColors.textSecondaryDark : const Color(0xFF14532D),
+                      height: 1.35,
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 18),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.civicNavy,
+                backgroundColor: isDark ? const Color(0xFF1E3A5F) : AppColors.civicNavy,
                 foregroundColor: Colors.white,
-                minimumSize: const Size.fromHeight(48),
+                minimumSize: const Size.fromHeight(46),
+                elevation: 0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               ),
               onPressed: () {
                 ref.read(scholarshipSchemesProvider.notifier).applyToScheme(scheme.id);
                 Navigator.pop(bottomSheetContext);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Successfully submitted application for ${scheme.title}!'),
-                    backgroundColor: AppColors.forestGreen,
+                    content: Text(
+                      'Successfully submitted application for ${scheme.title}!',
+                      style: GoogleFonts.outfit(fontSize: 12),
+                    ),
+                    backgroundColor: AppColors.emeraldVerified,
                   ),
                 );
               },
-              child: const Text('Confirm & Transmit to MoTA Portal'),
+              child: Text(
+                'Confirm & Transmit to MoTA Central Portal',
+                style: GoogleFonts.outfit(fontWeight: FontWeight.w600, fontSize: 13),
+              ),
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 10),
           ],
         ),
       ),
