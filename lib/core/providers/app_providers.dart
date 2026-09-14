@@ -51,6 +51,7 @@ class SchemesNotifier extends StateNotifier<List<ScholarshipScheme>> {
             requiredDocuments: scheme.requiredDocuments,
             deadline: scheme.deadline,
             fundingPattern: scheme.fundingPattern,
+            sourcePortal: scheme.sourcePortal,
             isEligible: scheme.isEligible,
             isApplied: true,
             applicationId: 'MOTA-2026-ST-${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}',

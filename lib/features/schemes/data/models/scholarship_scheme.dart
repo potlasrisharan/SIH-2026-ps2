@@ -10,6 +10,7 @@ class ScholarshipScheme {
   final List<String> requiredDocuments;
   final String deadline;
   final String fundingPattern;
+  final String sourcePortal;
   final bool isEligible;
   final bool isApplied;
   final String? applicationId;
@@ -26,6 +27,7 @@ class ScholarshipScheme {
     required this.requiredDocuments,
     required this.deadline,
     required this.fundingPattern,
+    required this.sourcePortal,
     required this.isEligible,
     required this.isApplied,
     this.applicationId,
@@ -56,6 +58,7 @@ class ScholarshipScheme {
       ],
       deadline: '31 October 2026',
       fundingPattern: '100% Central Ministry of Tribal Affairs (Direct DBT)',
+      sourcePortal: 'SFMP Portal (Canara Bank)',
       isEligible: true,
       isApplied: true,
       applicationId: 'MOTA-2026-ST-890241',
@@ -84,6 +87,7 @@ class ScholarshipScheme {
       ],
       deadline: '15 November 2026',
       fundingPattern: 'Centrally Sponsored Scheme (75% MoTA : 25% State Govt)',
+      sourcePortal: 'National Scholarship Portal (NSP)',
       isEligible: true,
       isApplied: false,
     ),
@@ -110,6 +114,7 @@ class ScholarshipScheme {
       ],
       deadline: '30 November 2026',
       fundingPattern: '100% Central Ministry of Tribal Affairs',
+      sourcePortal: 'SFMP Portal (Canara Bank)',
       isEligible: false, // Student is currently B.Tech UG
       isApplied: false,
     ),
@@ -137,6 +142,7 @@ class ScholarshipScheme {
       ],
       deadline: '15 December 2026',
       fundingPattern: '100% Central MoTA Disbursal',
+      sourcePortal: 'MoTA Standalone NOS Portal',
       isEligible: false,
       isApplied: false,
     ),
@@ -162,6 +168,7 @@ class ScholarshipScheme {
       ],
       deadline: '15 October 2026',
       fundingPattern: 'Centrally Sponsored Scheme (75:25)',
+      sourcePortal: 'National Scholarship Portal (NSP)',
       isEligible: false, // Student is in college
       isApplied: false,
     ),
