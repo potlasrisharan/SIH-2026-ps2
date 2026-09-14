@@ -1,118 +1,83 @@
-# ⚡ Whyward — Personal Goal Companion
+# MoTA Unified Scholarship Platform (SIH 2026 - Problem Statement ID: 26238)
 
-> A disciplined, offline-first personal growth and productivity application for Android, built with modern **Kotlin** and **Jetpack Compose**.
-
-[![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?logo=android&logoColor=white)](https://android.com)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.0+-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org)
-[![Architecture](https://img.shields.io/badge/Architecture-Clean%20%2F%20MVI-00ACC1)]()
-[![Database](https://img.shields.io/badge/Storage-Room%20(Offline--First)-4285F4?logo=sqlite&logoColor=white)](https://developer.android.com/training/data-storage/room)
-[![UI](https://img.shields.io/badge/UI-Jetpack%20Compose%20M3-4285F4?logo=jetpackcompose&logoColor=white)](https://developer.android.com/jetpack/compose)
+> **"Enter Once. Verify Once. Apply Anywhere."**  
+> Unified Digital Scholarship & DBT Disbursal Platform for Tribal Students  
+> **Ministry of Tribal Affairs (MoTA), Government of India**
 
 ---
 
-## 🎯 Overview
+## 🏛️ Executive Overview
 
-**Whyward** is an intentional, distraction-free goal execution system. It pairs daily habit execution with long-term vision, grounding task completion in intrinsic motivation ("Why") rather than endless, overwhelming todo lists.
+The **Ministry of Tribal Affairs (MoTA)** oversees central and centrally-sponsored scholarship programs for Scheduled Tribe (ST) students across India. Previously, students faced fragmented state-level portals, redundant physical document re-verification, administrative delays, and lack of DBT payment transparency.
 
-Designed with a bespoke **Monochrome Stealth Dark** aesthetic, Whyward ensures focus remains on execution.
+This application provides a **single-window digital public infrastructure** adhering to **GIGW 3.0** (Guidelines for Indian Government Websites) and **India Stack** (DigiLocker, Aadhaar / NPCI DBT mapper, PFMS):
+- **DigiLocker Encrypted Credential Vault:** Automatic retrieval and local caching of verified digital documents (ST Caste Certificate, Income Certificate, 10th/12th/UG Grade Records, and Bank Passbook).
+- **Offline Cryptographic QR Verification:** Instant field and desk scrutiny via offline-verifiable QR passes without internet connectivity.
+- **Auto-Eligibility Matching Engine:** Real-time matching against all 5 official MoTA scholarship schemes with zero redundant uploads.
+- **Live 5-Stage Institutional DBT Pipeline:** Real-time visibility through Institute Verification, District Nodal Officer (DNO), State Nodal Officer (SNO), MoTA Central Sanction Order, and Public Financial Management System (PFMS) direct credit.
+- **Tribal Grievance Redressal:** Direct escalation under C-PGRMS to MoTA Nodal Directors.
 
 ---
 
-## 🏗️ Architecture
+## 🎯 5 Core MoTA Scholarship Schemes Implemented
 
-Whyward follows **Clean Architecture** principles with unidirectional data flow (UDF) powered by Kotlin Coroutines and `StateFlow`:
+1. **Top Class Education for ST Students:**
+   - 100% Central Sector grant for ST students admitted to 250+ premier institutions (IITs, NITs, IIMs, AIIMS, NLUs).
+   - Full tuition fee waiver + ₹3,000/month living expense + ₹5,000/year book allowance + ₹45,000 one-time computer grant.
+2. **Post-Matric Scholarship for ST Students (PMS-ST):**
+   - Centrally sponsored (75:25) scheme covering Class 11 through Post-Graduation.
+   - Non-refundable tuition fees + annual maintenance allowances (₹4,000 to ₹13,500/year).
+3. **National Fellowship for Higher Education of ST Students (NFST):**
+   - 750 annual fellowships for M.Phil and Ph.D. scholars in Indian Universities.
+   - JRF: ₹37,000/month + HRA; SRF: ₹42,000/month + HRA + contingency grants.
+4. **National Overseas Scholarship for ST Candidates (NOS):**
+   - Support for Masters & Ph.D. abroad in QS Top 1000 universities.
+   - 100% foreign university tuition + annual living allowance (£9,900 UK / \$15,400 USA) + return airfare.
+5. **Pre-Matric Scholarship for ST Students:**
+   - Dropout prevention scholarship for Classes 9 & 10 (₹3,500 to ₹7,000/year).
+
+---
+
+## 🏗️ Architecture & Technology Stack
 
 ```
-app/src/main/java/com/joker/kit/
+lib/
 ├── core/
-│   ├── designsystem/     # Theme, Typography, Stealth Dark Color Palette
-│   ├── navigation/       # Navigation routes and type-safe arguments
-│   ├── notification/     # AlarmManager schedulers & BroadcastReceivers
-│   └── ui/               # Reusable Mono primitives (MonoCard, MonoButton, MonoProgressBar)
-├── data/
-│   ├── local/
-│   │   ├── dao/          # GoalDao, TaskDao (Room)
-│   │   ├── database/     # CompanionDatabase with schema migrations
-│   │   └── entity/       # GoalEntity, TaskEntity, MilestoneEntity
-│   └── repository/       # Repository implementations
-├── di/                   # Hilt dependency injection modules
-├── domain/
-│   ├── repository/       # Abstract repository interfaces
-│   └── usecase/          # CalculateStreakUseCase, MotivationEngineUseCase
-└── feature/
-    ├── goals/            # Goal management, detail breakdown, creation
-    ├── insights/         # Consistency trends & execution analytics
-    ├── main/             # Bottom navigation shell & scaffold
-    ├── progress/         # Long-term milestone visualization
-    ├── settings/         # App preferences & notification settings
-    └── today/            # Daily agenda, dynamic quotes, Apple Reminders task sheet
+│   ├── constants/        # AppColors (Stitch Civic Public Tech), AppStrings
+│   ├── theme/            # Material 3 Light + Dark Themes (Civic Navy & Saffron)
+│   ├── router/           # GoRouter with StatefulShellRoute
+│   └── providers/        # Riverpod Global State Notifiers
+├── features/
+│   ├── home/             # Dashboard, DigiLocker ID Card, Eligibility Card, Circulars
+│   ├── wallet/           # DigiLocker Credential Vault & Verifiable Offline QR Passes
+│   ├── schemes/          # 5 Central Schemes Explorer & 1-Click Instant Application
+│   ├── tracking/         # 5-Stage Institutional Timeline & PFMS DBT Tracking
+│   └── grievance/        # C-PGRMS Grievance Registration & Status Tracking
+└── main.dart
 ```
 
----
-
-## ✨ Key Features
-
-- **Today's Focus**: Intelligent day-scoped task filtering (`startOfToday..endOfToday`), pending overdue roll-forward, and real-time progress calculations.
-- **Apple Reminders Task Sheet**: iOS Reminders-inspired task sheet featuring quick date chips (*Today*, *Tomorrow*, *Weekend*, *Custom*), recurrence engine (*Daily*, *Weekdays*, *Weekends*, *Weekly*, *Monthly*), and priority flags.
-- **Anti-Procrastination Rules**: Strict time/date validation preventing scheduling tasks in the past, with automatic time-forwarding and inline error guards.
-- **Streak & Motivation Engine**: Tracks active execution streaks, calculates consistency scores, and rotates dynamic architectural quotes based on time of day and completion state.
-- **Goal Hierarchy**: Organizes daily tasks under core directives (*Vision*, *Why*, *Milestones*).
-- **100% Offline-First**: Zero external dependencies or mandatory cloud sync. Your data lives exclusively in an encrypted, optimized local SQLite database.
+- **Framework:** Flutter 3.41+ (Dart 3.11+, Sound Null Safety)
+- **State Management:** Riverpod 2.6 (`StateNotifierProvider`, `StateProvider`)
+- **Navigation:** GoRouter 17.5 (`StatefulShellRoute.indexedStack`)
+- **Design System:** Google Stitch *"Dignified Civic Public Tech"* (Material 3, Inter typography, WCAG 2.1 AAA contrast)
+- **QR Generation:** `qr_flutter` 4.1
 
 ---
 
-## 🛠️ Tech Stack
-
-| Layer | Technologies |
-|---|---|
-| **Language** | Kotlin 2.x (100% null-safe) |
-| **UI Toolkit** | Jetpack Compose (Material 3) |
-| **Architecture** | Clean Architecture + MVVM / UDF |
-| **Dependency Injection** | Hilt (Dagger) |
-| **Database** | Room SQLite with TypeConverters |
-| **Asynchronous** | Kotlin Coroutines, StateFlow, SharedFlow |
-| **Scheduling** | Android `AlarmManager` + `BroadcastReceiver` |
-| **Testing** | JUnit 4/5, MockK, AndroidX Test |
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- **Android Studio Ladybug (2024.2+)** or later
-- **JDK 21** (JetBrains Runtime recommended)
-- Android device or emulator running **Android 8.0 (API 26)** or higher (Target: Android 16 / SDK 36)
-
-### Clone & Build
+## 🚀 Running the App
 
 ```bash
-# 1. Clone repository
-git clone https://github.com/potlasrisharan/personal-goal-companion.git
-cd personal-goal-companion
+# Get dependencies
+flutter pub get
 
-# 2. Build Debug APK
-./gradlew assembleDebug
+# Run static analysis
+flutter analyze
 
-# 3. Run Unit Tests
-./gradlew testDebugUnitTest
+# Run unit and widget tests
+flutter test
+
+# Build debug APK
+flutter build apk --debug
 ```
 
-### Generated Artifacts
-After running `assembleDebug`, the generated APKs are located at:
-- `app/build/outputs/apk/debug/app-universal-debug.apk`
-- `app/build/outputs/apk/debug/app-arm64-v8a-debug.apk`
-
----
-
-## 🧪 Testing
-
-Execute the unit test suite:
-```bash
-./gradlew :app:testDebugUnitTest
-```
-
----
-
-## 📄 License
-
-This repository is maintained privately by **Potla Sri Sharan**. All rights reserved.
+APK Output Location: `build/app/outputs/flutter-apk/app-debug.apk`
