@@ -22,8 +22,8 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Tribal Grievance Redressal',
-          style: GoogleFonts.outfit(fontWeight: FontWeight.w700, fontSize: 18),
+          'Tribal Grievance Redressal (C-PGRMS)',
+          style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800, fontSize: 17),
         ),
       ),
       body: Column(
@@ -49,17 +49,19 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
                     children: [
                       Text(
                         'MoTA C-PGRMS Escalation Desk',
-                        style: GoogleFonts.outfit(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
                           color: isDark ? const Color(0xFF93C5FD) : AppColors.infoBlue,
                         ),
                       ),
+                      const SizedBox(height: 2),
                       Text(
-                        'Direct escalation channel to MoTA Nodal Directors and District Welfare Officers.',
-                        style: GoogleFonts.outfit(
+                        'Direct statutory escalation channel to MoTA Nodal Directors and District Welfare Officers.',
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 11,
                           color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
+                          height: 1.3,
                         ),
                       ),
                     ],
@@ -87,10 +89,11 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
         backgroundColor: isDark ? const Color(0xFF1E3A5F) : AppColors.civicNavy,
         foregroundColor: Colors.white,
         elevation: 1,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         icon: const Icon(Icons.add_comment_outlined, size: 18),
         label: Text(
           'Lodge Grievance',
-          style: GoogleFonts.outfit(fontWeight: FontWeight.w600, fontSize: 13),
+          style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 13),
         ),
         onPressed: () => _showLodgeGrievanceDialog(context, isDark),
       ),
@@ -103,32 +106,40 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
     return Container(
       decoration: BoxDecoration(
         color: isDark ? AppColors.darkCard : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
           width: 1.0,
         ),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Docket Header Bar
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.darkSurface : const Color(0xFFF8FAFC),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(11)),
+              border: Border(
+                bottom: BorderSide(
+                  color: isDark ? AppColors.darkBorderSubtle : AppColors.lightBorder,
+                ),
+              ),
+            ),
+            child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
                   decoration: BoxDecoration(
                     color: isResolved
-                        ? (isDark
-                            ? AppColors.emeraldVerified.withValues(alpha: 0.15)
-                            : AppColors.emeraldLight)
-                        : (isDark
-                            ? AppColors.saffron.withValues(alpha: 0.15)
-                            : AppColors.saffronLight),
-                    borderRadius: BorderRadius.circular(10),
+                        ? (isDark ? AppColors.emeraldBadgeBg : AppColors.emeraldLight)
+                        : (isDark ? AppColors.saffronBadgeBg : AppColors.saffronLight),
+                    borderRadius: BorderRadius.circular(5),
                     border: Border.all(
-                      color: isResolved ? AppColors.emeraldBorder : AppColors.saffronBorder,
+                      color: isResolved
+                          ? (isDark ? AppColors.emeraldVerified.withValues(alpha: 0.4) : AppColors.emeraldBorder)
+                          : (isDark ? AppColors.saffron.withValues(alpha: 0.4) : AppColors.saffronBorder),
                     ),
                   ),
                   child: Row(
@@ -143,7 +154,7 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
                         ticket.status.toUpperCase(),
                         style: GoogleFonts.jetBrainsMono(
                           fontSize: 9,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w800,
                           color: isResolved ? AppColors.emeraldVerified : AppColors.saffron,
                         ),
                       ),
@@ -154,68 +165,80 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
                 Text(
                   ticket.ticketId,
                   style: GoogleFonts.jetBrainsMono(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w700,
                     color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-            Text(
-              ticket.subject,
-              style: GoogleFonts.outfit(fontWeight: FontWeight.w700, fontSize: 14),
-            ),
-            const SizedBox(height: 3),
-            Text(
-              'Category: ${ticket.category} • Application: ${ticket.applicationId}',
-              style: GoogleFonts.outfit(
-                fontSize: 11,
-                color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              ticket.description,
-              style: GoogleFonts.outfit(
-                fontSize: 12,
-                color: isDark ? AppColors.textSecondaryDark : AppColors.textPrimaryLight,
-                height: 1.4,
-              ),
-            ),
-            if (ticket.resolution != null) ...[
-              const SizedBox(height: 12),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: isDark ? AppColors.darkSurface : AppColors.emeraldLight.withValues(alpha: 0.4),
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    color: isDark ? AppColors.darkBorderSubtle : AppColors.emeraldBorder,
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(14),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  ticket.subject,
+                  style: GoogleFonts.plusJakartaSans(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 14,
+                    letterSpacing: -0.2,
                   ),
                 ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(Icons.check_circle_outline, size: 16, color: AppColors.emeraldVerified),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        ticket.resolution!,
-                        style: GoogleFonts.outfit(
-                          fontSize: 11,
-                          color: isDark ? const Color(0xFF6EE7B7) : const Color(0xFF14532D),
-                          fontWeight: FontWeight.w500,
-                          height: 1.35,
-                        ),
+                const SizedBox(height: 4),
+                Text(
+                  'Category: ${ticket.category} • Application: ${ticket.applicationId}',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 11,
+                    color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  ticket.description,
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 12,
+                    color: isDark ? AppColors.textSecondaryDark : AppColors.textPrimaryLight,
+                    height: 1.45,
+                  ),
+                ),
+                if (ticket.resolution != null) ...[
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: isDark ? AppColors.darkSurface : const Color(0xFFF0FDF4),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: isDark ? AppColors.darkBorderSubtle : const Color(0xFFBBF7D0),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ],
-          ],
-        ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Icon(Icons.check_circle_outline, size: 16, color: AppColors.emeraldVerified),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            ticket.resolution!,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 11.5,
+                              color: isDark ? const Color(0xFF6EE7B7) : const Color(0xFF14532D),
+                              fontWeight: FontWeight.w600,
+                              height: 1.35,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -230,7 +253,7 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
       isScrollControlled: true,
       backgroundColor: isDark ? AppColors.darkCard : Colors.white,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (bottomSheetContext) => Padding(
         padding: EdgeInsets.only(
@@ -249,14 +272,14 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: AppColors.civicNavyLight.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(6),
                   ),
                   child: const Icon(Icons.feedback_outlined, color: AppColors.civicNavyLight, size: 18),
                 ),
                 const SizedBox(width: 10),
                 Text(
                   'Lodge Formal Grievance',
-                  style: GoogleFonts.outfit(fontSize: 16, fontWeight: FontWeight.w700),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 16, fontWeight: FontWeight.w800),
                 ),
                 const Spacer(),
                 IconButton(
@@ -270,8 +293,8 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
               initialValue: selectedCategory,
               decoration: InputDecoration(
                 labelText: 'Grievance Category',
-                labelStyle: GoogleFonts.outfit(fontSize: 12),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                labelStyle: GoogleFonts.plusJakartaSans(fontSize: 12),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               ),
               items: [
@@ -282,7 +305,7 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
               ]
                   .map((c) => DropdownMenuItem(
                         value: c,
-                        child: Text(c, style: GoogleFonts.outfit(fontSize: 13)),
+                        child: Text(c, style: GoogleFonts.plusJakartaSans(fontSize: 13)),
                       ))
                   .toList(),
               onChanged: (val) {
@@ -294,11 +317,11 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
               controller: subjectController,
               decoration: InputDecoration(
                 labelText: 'Subject',
-                labelStyle: GoogleFonts.outfit(fontSize: 12),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                labelStyle: GoogleFonts.plusJakartaSans(fontSize: 12),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
               ),
-              style: GoogleFonts.outfit(fontSize: 13),
+              style: GoogleFonts.plusJakartaSans(fontSize: 13),
             ),
             const SizedBox(height: 12),
             TextField(
@@ -306,11 +329,11 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
               maxLines: 3,
               decoration: InputDecoration(
                 labelText: 'Details of Issue',
-                labelStyle: GoogleFonts.outfit(fontSize: 12),
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+                labelStyle: GoogleFonts.plusJakartaSans(fontSize: 12),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
                 contentPadding: const EdgeInsets.all(12),
               ),
-              style: GoogleFonts.outfit(fontSize: 13),
+              style: GoogleFonts.plusJakartaSans(fontSize: 13),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
@@ -319,7 +342,7 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
                 foregroundColor: Colors.white,
                 minimumSize: const Size.fromHeight(46),
                 elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               ),
               onPressed: () {
                 if (subjectController.text.trim().isEmpty) return;
@@ -334,7 +357,7 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
                   SnackBar(
                     content: Text(
                       'Grievance lodged under MoTA C-PGRMS with assigned tracking ID!',
-                      style: GoogleFonts.outfit(fontSize: 12),
+                      style: GoogleFonts.plusJakartaSans(fontSize: 12),
                     ),
                     backgroundColor: AppColors.emeraldVerified,
                   ),
@@ -342,7 +365,7 @@ class _GrievanceScreenState extends ConsumerState<GrievanceScreen> {
               },
               child: Text(
                 'Submit Grievance',
-                style: GoogleFonts.outfit(fontWeight: FontWeight.w600, fontSize: 13),
+                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 13),
               ),
             ),
           ],

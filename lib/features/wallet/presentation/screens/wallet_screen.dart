@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_strings.dart';
 import '../../../../core/providers/app_providers.dart';
 import '../../../../core/widgets/pulse_dot.dart';
 import '../widgets/qr_verification_dialog.dart';
@@ -35,7 +36,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
       appBar: AppBar(
         title: Text(
           'DigiLocker Credential Vault',
-          style: GoogleFonts.outfit(fontWeight: FontWeight.w700, fontSize: 18),
+          style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800, fontSize: 17),
         ),
         actions: [
           IconButton(
@@ -46,7 +47,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                 SnackBar(
                   content: Text(
                     'DigiLocker credentials synchronized and stored locally with AES-256 encryption.',
-                    style: GoogleFonts.outfit(fontSize: 12),
+                    style: GoogleFonts.plusJakartaSans(fontSize: 12),
                   ),
                   backgroundColor: AppColors.emeraldVerified,
                 ),
@@ -70,7 +71,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
             ),
             child: Row(
               children: [
-                const PulseDot(color: AppColors.emeraldVerified, size: 7),
+                const PulseDot(color: AppColors.emeraldVerified, size: 6.5),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
@@ -78,15 +79,15 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                     children: [
                       Text(
                         'Verified Local Credential Repository',
-                        style: GoogleFonts.outfit(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w700,
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.w800,
                           color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimaryLight,
                         ),
                       ),
                       Text(
-                        'Offline verifiable tokens ready for instant 1-click scholarship binding',
-                        style: GoogleFonts.outfit(
+                        'Offline cryptographic tokens ready for instant 1-click scholarship binding',
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 11,
                           color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
                         ),
@@ -110,20 +111,20 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                   child: FilterChip(
                     selected: isSelected,
                     label: Text(filter),
-                    labelStyle: GoogleFonts.outfit(
-                      fontSize: 12,
-                      fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                    labelStyle: GoogleFonts.plusJakartaSans(
+                      fontSize: 11.5,
+                      fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                       color: isSelected
                           ? Colors.white
                           : (isDark ? AppColors.textSecondaryDark : AppColors.textPrimaryLight),
                     ),
-                    selectedColor: isDark ? const Color(0xFF1E3A5F) : AppColors.civicNavy,
+                    selectedColor: isDark ? const Color(0xFF1E3A64) : AppColors.civicNavy,
                     backgroundColor: isDark ? AppColors.darkSurface : Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(6),
                       side: BorderSide(
                         color: isSelected
-                            ? (isDark ? const Color(0xFF1E3A5F) : AppColors.civicNavy)
+                            ? (isDark ? const Color(0xFF1E3A64) : AppColors.civicNavy)
                             : (isDark ? AppColors.darkBorder : AppColors.lightBorder),
                       ),
                     ),
@@ -159,7 +160,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
     return Container(
       decoration: BoxDecoration(
         color: isDark ? AppColors.darkCard : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isDark ? AppColors.darkBorder : AppColors.lightBorder,
           width: 1.0,
@@ -174,15 +175,15 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(9),
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: AppColors.civicNavyLight.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(10),
+                    color: isDark ? const Color(0xFF16233B) : const Color(0xFFEFF6FF),
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(
                     _getDocumentIcon(doc.type),
                     color: isDark ? const Color(0xFF93C5FD) : AppColors.civicNavy,
-                    size: 20,
+                    size: 19,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -192,24 +193,24 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                     children: [
                       Text(
                         doc.title,
-                        style: GoogleFonts.outfit(
+                        style: GoogleFonts.plusJakartaSans(
                           fontWeight: FontWeight.w700,
-                          fontSize: 14,
+                          fontSize: 13.5,
                         ),
                       ),
-                      const SizedBox(height: 3),
+                      const SizedBox(height: 2),
                       Text(
                         doc.certificateNumber,
                         style: GoogleFonts.jetBrainsMono(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w700,
                           color: AppColors.infoBlue,
                         ),
                       ),
-                      const SizedBox(height: 3),
+                      const SizedBox(height: 2),
                       Text(
                         doc.issuer,
-                        style: GoogleFonts.outfit(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 11,
                           color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
                         ),
@@ -218,28 +219,24 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
                   decoration: BoxDecoration(
-                    color: isDark
-                        ? AppColors.emeraldVerified.withValues(alpha: 0.15)
-                        : AppColors.emeraldLight,
-                    borderRadius: BorderRadius.circular(12),
+                    color: isDark ? AppColors.emeraldBadgeBg : AppColors.emeraldLight,
+                    borderRadius: BorderRadius.circular(5),
                     border: Border.all(
-                      color: isDark
-                          ? AppColors.emeraldVerified.withValues(alpha: 0.3)
-                          : AppColors.emeraldBorder,
+                      color: isDark ? AppColors.emeraldVerified.withValues(alpha: 0.4) : AppColors.emeraldBorder,
                     ),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.check, size: 11, color: AppColors.emeraldVerified),
+                      const Icon(Icons.check, size: 10, color: AppColors.emeraldVerified),
                       const SizedBox(width: 3),
                       Text(
                         'VERIFIED',
                         style: GoogleFonts.jetBrainsMono(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 8.5,
+                          fontWeight: FontWeight.w800,
                           color: AppColors.emeraldVerified,
                         ),
                       ),
@@ -258,22 +255,27 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
             child: Column(
               children: doc.metadata.entries.map((entry) {
                 return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 2.5),
+                  padding: const EdgeInsets.symmetric(vertical: 2),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         entry.key,
-                        style: GoogleFonts.outfit(
+                        style: GoogleFonts.plusJakartaSans(
                           fontSize: 11,
                           color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
                         ),
                       ),
-                      Text(
-                        entry.value,
-                        style: GoogleFonts.jetBrainsMono(
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          entry.value,
+                          textAlign: TextAlign.end,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: GoogleFonts.jetBrainsMono(
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ],
@@ -292,7 +294,7 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                 Text(
                   'Issued: ${doc.issueDate}',
                   style: GoogleFonts.jetBrainsMono(
-                    fontSize: 10,
+                    fontSize: 9.5,
                     color: isDark ? AppColors.textMutedDark : AppColors.textMutedLight,
                   ),
                 ),
@@ -304,18 +306,18 @@ class _WalletScreenState extends ConsumerState<WalletScreen> {
                     side: BorderSide(
                       color: isDark ? const Color(0xFF3B82F6) : AppColors.civicNavy,
                     ),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
                   ),
                   icon: Icon(
                     Icons.qr_code,
-                    size: 14,
+                    size: 13,
                     color: isDark ? const Color(0xFF93C5FD) : AppColors.civicNavy,
                   ),
                   label: Text(
-                    'Offline QR Pass',
-                    style: GoogleFonts.outfit(
+                    AppStrings.offlineQrPass,
+                    style: GoogleFonts.plusJakartaSans(
                       fontSize: 11,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w700,
                       color: isDark ? const Color(0xFF93C5FD) : AppColors.civicNavy,
                     ),
                   ),

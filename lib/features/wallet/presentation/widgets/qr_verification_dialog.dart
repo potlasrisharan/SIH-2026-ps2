@@ -24,10 +24,10 @@ class QrVerificationDialog extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       backgroundColor: isDark ? AppColors.darkCard : Colors.white,
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(18),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -35,10 +35,10 @@ class QrVerificationDialog extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(7),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
                     color: AppColors.emeraldVerified.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(6),
                   ),
                   child: const Icon(Icons.qr_code_2, color: AppColors.emeraldVerified, size: 18),
                 ),
@@ -49,15 +49,15 @@ class QrVerificationDialog extends StatelessWidget {
                     children: [
                       Text(
                         'Offline Cryptographic QR Pass',
-                        style: GoogleFonts.outfit(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 14,
+                        style: GoogleFonts.plusJakartaSans(
+                          fontWeight: FontWeight.w800,
+                          fontSize: 13.5,
                         ),
                       ),
                       Text(
                         'Zero-Network Verifiable Credential',
-                        style: GoogleFonts.outfit(
-                          fontSize: 11,
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 10.5,
                           color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
                         ),
                       ),
@@ -72,14 +72,14 @@ class QrVerificationDialog extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 16),
 
             // High Contrast QR Frame
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(14),
+                borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: const Color(0xFFCBD5E1), width: 1.0),
               ),
               child: QrImageView(
@@ -88,15 +88,15 @@ class QrVerificationDialog extends StatelessWidget {
                 size: 190.0,
                 eyeStyle: const QrEyeStyle(
                   eyeShape: QrEyeShape.square,
-                  color: Color(0xFF0F172A),
+                  color: Color(0xFF070B12),
                 ),
                 dataModuleStyle: const QrDataModuleStyle(
                   dataModuleShape: QrDataModuleShape.square,
-                  color: Color(0xFF0F172A),
+                  color: Color(0xFF070B12),
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
 
             // Metadata Card
             Container(
@@ -104,7 +104,7 @@ class QrVerificationDialog extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: isDark ? AppColors.darkSurface : AppColors.lightCanvas,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: isDark ? AppColors.darkBorderSubtle : AppColors.lightBorder,
                 ),
@@ -114,22 +114,22 @@ class QrVerificationDialog extends StatelessWidget {
                 children: [
                   Text(
                     document.title,
-                    style: GoogleFonts.outfit(fontWeight: FontWeight.w700, fontSize: 13),
+                    style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800, fontSize: 12.5),
                   ),
                   const SizedBox(height: 3),
                   Text(
                     'CERT ID: ${document.certificateNumber}',
                     style: GoogleFonts.jetBrainsMono(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 9.5,
+                      fontWeight: FontWeight.w700,
                       color: AppColors.infoBlue,
                     ),
                   ),
-                  const SizedBox(height: 3),
+                  const SizedBox(height: 2),
                   Text(
                     document.issuer,
-                    style: GoogleFonts.outfit(
-                      fontSize: 11,
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 10.5,
                       color: isDark ? AppColors.textMutedDark : AppColors.textSecondaryLight,
                     ),
                   ),
@@ -138,12 +138,15 @@ class QrVerificationDialog extends StatelessWidget {
                     children: [
                       const Icon(Icons.verified, size: 12, color: AppColors.emeraldVerified),
                       const SizedBox(width: 4),
-                      Text(
-                        'Digitally Signed via Certifying Authority India',
-                        style: GoogleFonts.jetBrainsMono(
-                          fontSize: 9,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.emeraldVerified,
+                      Expanded(
+                        child: Text(
+                          'Digitally Signed via Certifying Authority India',
+                          style: GoogleFonts.jetBrainsMono(
+                            fontSize: 8.5,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.emeraldVerified,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
@@ -151,21 +154,21 @@ class QrVerificationDialog extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
 
             // Close Action
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: isDark ? const Color(0xFF1E3A5F) : AppColors.civicNavy,
+                backgroundColor: isDark ? const Color(0xFF1E3A64) : AppColors.civicNavy,
                 foregroundColor: Colors.white,
-                minimumSize: const Size.fromHeight(40),
+                minimumSize: const Size.fromHeight(38),
                 elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
               ),
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
-                'Close Pass',
-                style: GoogleFonts.outfit(fontWeight: FontWeight.w600, fontSize: 13),
+                'Close Verification Pass',
+                style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w700),
               ),
             ),
           ],

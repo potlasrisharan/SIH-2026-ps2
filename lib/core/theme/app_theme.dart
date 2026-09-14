@@ -22,31 +22,31 @@ class AppTheme {
       outlineVariant: AppColors.lightBorderSubtle,
     );
 
-    final textTheme = GoogleFonts.outfitTextTheme(ThemeData.light().textTheme).copyWith(
-      displayMedium: GoogleFonts.outfit(
-        fontSize: 28,
-        fontWeight: FontWeight.w700,
-        letterSpacing: -0.5,
+    final textTheme = GoogleFonts.plusJakartaSansTextTheme(ThemeData.light().textTheme).copyWith(
+      displayMedium: GoogleFonts.plusJakartaSans(
+        fontSize: 26,
+        fontWeight: FontWeight.w800,
+        letterSpacing: -0.6,
         color: AppColors.textPrimaryLight,
       ),
-      titleLarge: GoogleFonts.outfit(
-        fontSize: 20,
+      titleLarge: GoogleFonts.plusJakartaSans(
+        fontSize: 19,
         fontWeight: FontWeight.w700,
         letterSpacing: -0.3,
         color: AppColors.textPrimaryLight,
       ),
-      titleMedium: GoogleFonts.outfit(
-        fontSize: 16,
+      titleMedium: GoogleFonts.plusJakartaSans(
+        fontSize: 15,
         fontWeight: FontWeight.w600,
         color: AppColors.textPrimaryLight,
       ),
-      bodyLarge: GoogleFonts.outfit(
-        fontSize: 15,
+      bodyLarge: GoogleFonts.plusJakartaSans(
+        fontSize: 14,
         fontWeight: FontWeight.w400,
         height: 1.5,
         color: AppColors.textSecondaryLight,
       ),
-      bodyMedium: GoogleFonts.outfit(
+      bodyMedium: GoogleFonts.plusJakartaSans(
         fontSize: 13,
         fontWeight: FontWeight.w400,
         height: 1.45,
@@ -54,8 +54,8 @@ class AppTheme {
       ),
       labelSmall: GoogleFonts.jetBrainsMono(
         fontSize: 11,
-        fontWeight: FontWeight.w500,
-        letterSpacing: 0.2,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.3,
       ),
     );
 
@@ -75,19 +75,19 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           side: const BorderSide(color: AppColors.lightBorder, width: 1.0),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.civicNavy,
           foregroundColor: Colors.white,
-          minimumSize: const Size.fromHeight(46),
+          minimumSize: const Size.fromHeight(44),
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
           ),
-          textStyle: GoogleFonts.outfit(fontWeight: FontWeight.w600, fontSize: 14),
+          textStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 13),
         ),
       ),
     );
@@ -110,31 +110,31 @@ class AppTheme {
       outlineVariant: AppColors.darkBorderSubtle,
     );
 
-    final textTheme = GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme).copyWith(
-      displayMedium: GoogleFonts.outfit(
-        fontSize: 28,
-        fontWeight: FontWeight.w700,
-        letterSpacing: -0.5,
+    final textTheme = GoogleFonts.plusJakartaSansTextTheme(ThemeData.dark().textTheme).copyWith(
+      displayMedium: GoogleFonts.plusJakartaSans(
+        fontSize: 26,
+        fontWeight: FontWeight.w800,
+        letterSpacing: -0.6,
         color: AppColors.textPrimaryDark,
       ),
-      titleLarge: GoogleFonts.outfit(
-        fontSize: 20,
+      titleLarge: GoogleFonts.plusJakartaSans(
+        fontSize: 19,
         fontWeight: FontWeight.w700,
         letterSpacing: -0.3,
         color: AppColors.textPrimaryDark,
       ),
-      titleMedium: GoogleFonts.outfit(
-        fontSize: 16,
+      titleMedium: GoogleFonts.plusJakartaSans(
+        fontSize: 15,
         fontWeight: FontWeight.w600,
         color: AppColors.textPrimaryDark,
       ),
-      bodyLarge: GoogleFonts.outfit(
-        fontSize: 15,
+      bodyLarge: GoogleFonts.plusJakartaSans(
+        fontSize: 14,
         fontWeight: FontWeight.w400,
         height: 1.5,
         color: AppColors.textSecondaryDark,
       ),
-      bodyMedium: GoogleFonts.outfit(
+      bodyMedium: GoogleFonts.plusJakartaSans(
         fontSize: 13,
         fontWeight: FontWeight.w400,
         height: 1.45,
@@ -142,8 +142,8 @@ class AppTheme {
       ),
       labelSmall: GoogleFonts.jetBrainsMono(
         fontSize: 11,
-        fontWeight: FontWeight.w500,
-        letterSpacing: 0.2,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.3,
       ),
     );
 
@@ -163,19 +163,19 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(
           side: const BorderSide(color: AppColors.darkBorder, width: 1.0),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.civicNavyLight,
           foregroundColor: Colors.white,
-          minimumSize: const Size.fromHeight(46),
+          minimumSize: const Size.fromHeight(44),
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(8),
           ),
-          textStyle: GoogleFonts.outfit(fontWeight: FontWeight.w600, fontSize: 14),
+          textStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 13),
         ),
       ),
     );
